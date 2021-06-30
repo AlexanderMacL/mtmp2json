@@ -20,7 +20,11 @@ JSON is both human-readable (you can open it in Notepad) and machine-readable. *
 
 #### Author
 Alexander MacLaren
+
 dam216@ic.ac.uk
+
 Tribology Group
+
 Dept. Mechanical Engineering
+
 Imperial College London
