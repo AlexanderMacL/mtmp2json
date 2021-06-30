@@ -19,12 +19,8 @@ JSON is both human-readable (you can open it in Notepad) and machine-readable. *
 3. If anything goes wrong, let me know! dam216@ic.ac.uk
 
 #### Author
-Alexander MacLaren
-
-dam216@ic.ac.uk
-
-Tribology Group
-
-Dept. Mechanical Engineering
-
-Imperial College London
+- Alexander MacLaren
+- dam216@ic.ac.uk
+- Tribology Group
+- Dept. Mechanical Engineering
+- Imperial College London
