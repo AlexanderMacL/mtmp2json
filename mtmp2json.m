@@ -1,5 +1,8 @@
-%% Function to convert *.mtmp file to json encoded data
-% 
+%% Function to convert *.mtmp or *.etmp file to JSON encoded data
+%
+% author: Alexander MacLaren
+% revised: 30/06/2021
+%
 % Usage:
 %   J = mtmp2json() - a file open dialog is provided to open *.mtmp file
 %       and to save *.json file. To be used at the command line or as a
@@ -14,9 +17,7 @@
 %
 % Notes:
 %   ETM profile files are also supported
-% 
-% 
-% 
+%
 
 
 function [J] = mtmp2json(varargin)

@@ -1,7 +1,9 @@
-%% Function to create MTM profile file from JSON encoded data
+%% Function to create MTM/ETM profile file from JSON encoded data
 %
+% author: Alexander MacLaren
+% revised: 30/06/2021
 % 
-% Usage
+% Usage:
 %   json2mtmp() - a file open dialog is provided to open *.json file and to
 %       save *.mtmp file. To be used at the command line or as a standalone
 %       script.
@@ -12,10 +14,11 @@
 %       outfileloc respectively contain the locations of the desired input
 %       (JSON) and output (mtmp) files.
 % 
-% Notes
+% Notes:
 %   The mapper step should never come last
 %   See commented example JSON file for allowed fields, or use accompanying
-%   function mtmp2json to decode an existing mtmp
+%       function mtmp2json to decode an existing mtmp
+%   ETM profile files are also supported
 %   
 
 
