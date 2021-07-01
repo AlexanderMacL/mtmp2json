@@ -10,6 +10,38 @@ You could use this code to:
 ## Why JSON?
 JSON is both human-readable (you can open it in Notepad) and machine-readable. **An example JSON file is provided** (with comments, which break the rules of JSON so this can't be parsed) to explain the JSON tags corresponding to each setting. An identical JSON file is provided without the comments so you can try it out.
 
+A minimal working JSON file takes the following form:
+`{
+	"Type": "3/4in ball",
+	"Name": "json MTM test",
+	"Steps": [
+	{
+		"stepType": "Traction",
+		"stepName": "A traction step",
+		"tempCtrlEn": true,
+		"tempCtrlProbe": "pot",
+		"tempCtrlTemp": 60,
+		"waitForTempBeforeStep": true,
+		"idleSpeed": 800,
+		"idleLoad": 20,
+		"idleSRR": 1.0,
+		"unloadAtEnd": false,
+		"ECRoption": "none",
+		"measDiscTrackRadBeforeStep": false,
+		"stepLoad": 40,
+		"stepSpeed": 220,
+		"SRRsteps": [
+		{
+			"startSRR": 1,
+			"endSRR": 10,
+			"numSteps": 5,
+			"type": "logarithmic"
+		}
+		]
+	}
+	]
+}`
+
 ## Notes
 1. The scripts are written in MATLAB, and will work if you just open them in MATLAB and press Run. They can also be used as functions in your own script to create more complex profile files, e.g. long scuffing profiles.
 2. There are differences between the MTM and the ETM - check these before converting files. The main ones are:
