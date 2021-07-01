@@ -11,7 +11,7 @@ You could use this code to:
 JSON is both human-readable (you can open it in Notepad) and machine-readable. **An example JSON file is provided** (with comments, which break the rules of JSON so this can't be parsed) to explain the JSON tags corresponding to each setting. An identical JSON file is provided without the comments so you can try it out.
 
 A minimal working JSON file takes the following form:
-
+```
 {
 	"Type": "3/4in ball",
 	"Name": "json MTM test",
@@ -42,6 +42,7 @@ A minimal working JSON file takes the following form:
 	}
 	]
 }
+```
 
 
 ## Notes
