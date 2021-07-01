@@ -28,7 +28,7 @@ if (nargin==0)
     [flnm,pth,~] = uigetfile({'*.mtmp','MTM Profile Files (*.mtmp)';'*.etmp','ETM Profile Files (*.etmp)';'*.*','All Files (*.*)'});
     f = fopen([pth,flnm]);
 
-elseif (nargin>1)
+elseif (nargin>2)
     error("Too many arguments (%d given)",nargin);
 
 else 
@@ -41,7 +41,7 @@ raw = fread(f, inf, 'uint8=>uint8');
 data = raw';
 fclose(f);
 
-disp("Parsing file "+[pth,flnm]+" ...");
+disp("Parsing file "+flnm+" ...");
 
 c = uint64(length(data));
 k = uint64(1);
@@ -411,9 +411,14 @@ str = strrep(str, '{', sprintf('\n{\n'));
 str = strrep(str, '}', sprintf('\n}\n'));
 str = strrep(str, sprintf('}\n,'), '},');
 
-[flnm,pth,~] = uiputfile({'*.json','JavaScript Object Notation Files (*.json)';'*.*','All Files (*.*)'},'Save File',flnm(1:length(flnm)-5));
+if (nargin==2)
+    flnm = varargin{2};
+    f = fopen(flnm,'w');
+else
+    [flnm,pth,~] = uiputfile({'*.json','JavaScript Object Notation Files (*.json)';'*.*','All Files (*.*)'},'Save File',flnm(1:length(flnm)-5));
+    f = fopen([pth,flnm],'w');
+end
 
 % write JSON string to file
-f = fopen([pth,flnm],'w');
 fwrite(f, str(2:end));
 fclose(f);

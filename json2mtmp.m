@@ -59,6 +59,9 @@ end
 if (nargin==2)
     flnm = varargin{2};
     f = fopen(flnm,"w");
+elseif (nargin==1)
+    flnm = J.outFileLocation;
+    f = fopen(flnm,"w");
 else
     [flnm,pth,~] = uiputfile({'*.mtmp','MTM Profile Files (*.mtmp)';'*.etmp','ETM Profile Files (*.etmp)';'*.*','All Files (*.*)'},'Save File',flnm(1:length(flnm)-5));
     f = fopen([pth,flnm],"w");
