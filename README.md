@@ -2,7 +2,7 @@
 Scripts to convert between `*.mtmp`, `*.etmp` files and JSON (JavaScript Object Notation) data.
 
 # mtmd2json
-A script to convert the data from `*.mtmd` and `*.etmd` files to JSON data (via a MATLAB data structure that you could use to access the data)
+A script to convert the data from `*.mtmd` and `*.etmd` files to JSON data.
 
 ## Why is this useful?
 You could use this code to:
