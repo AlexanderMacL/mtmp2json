@@ -12,7 +12,7 @@ You could use this code to:
 * Script the processing of your results instead of copying from .txt files
 
 ## Why JSON?
-JSON is both human-readable (you can open it in Notepad) and machine-readable. **An example JSON file is provided** (with comments, which break the rules of JSON so this can't be parsed) to explain the JSON tags corresponding to each setting. An identical JSON file is provided without the comments so you can try it out.
+JSON is both human-readable (you can open it in Notepad) and machine-readable. **An example JSON profile file is provided** (with comments, which break the rules of JSON so this can't be parsed) to explain the JSON tags corresponding to each setting. An identical JSON file is provided without the comments so you can try it out.
 
 A minimal working JSON profile file takes the following form:
 ```
