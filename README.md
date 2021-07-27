@@ -1,16 +1,20 @@
-# mtmp2json
+# mtmp2json and json2mtmp
 Scripts to convert between `*.mtmp`, `*.etmp` files and JSON (JavaScript Object Notation) data.
+
+# mtmd2json
+A script to convert the data from `*.mtmd` and `*.etmd` files to JSON data (via a MATLAB data structure that you could use to access the data)
 
 ## Why is this useful?
 You could use this code to:
-* Examine and edit your profile files without using PCS's software, e.g. on your own computer
+* Examine and edit your profile and data files without using PCS's software, e.g. on your own computer
 * Create your profile files using a script instead of having to do it manually
 * Reuse your MTM profile files on the ETM, and vice versa
+* Script the processing of your results instead of copying from .txt files
 
 ## Why JSON?
 JSON is both human-readable (you can open it in Notepad) and machine-readable. **An example JSON file is provided** (with comments, which break the rules of JSON so this can't be parsed) to explain the JSON tags corresponding to each setting. An identical JSON file is provided without the comments so you can try it out.
 
-A minimal working JSON file takes the following form:
+A minimal working JSON profile file takes the following form:
 ```
 {
 	"Type": "3/4in ball",
