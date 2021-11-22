@@ -1,12 +1,15 @@
 %% Function to convert *.mtmd or *.etmd file to JSON encoded data
 %
 % author: Alexander MacLaren
-% revised: 27/07/2021
+% revised: 22/11/2021
 %
 % Usage:
 %   K = mtmd2json() - a file open dialog is provided to open *.mtmd file
 %       and to save *.json file. To be used at the command line or as a
 %       standalone script.
+%   K = mtmd2json(infileloc) - the string or character vector infileloc
+%       specifies the location of the input (mtmd) file - no output file is
+%       written.
 %   K = mtmd2json(infileloc, outfileloc) - the strings or character vectors
 %       infileloc and outfileloc respectively contain the locations of the
 %       desired input (mtmd) and output (JSON) files.
@@ -28,7 +31,6 @@
 function [K] = mtmd2json(varargin)
 
 if (nargin==0)
-    
     % open input file
     [flnm,pth,~] = uigetfile({'*.mtmd','MTM Data Files (*.mtmd)';'*.etmd','ETM Data Files (*.etmd)';'*.*','All Files (*.*)'});
     f = fopen([pth,flnm]);
@@ -73,9 +75,9 @@ if (c>=34)
     [K.lubeName, ki] = parsestr(data, k); k = k + ki;
     [K.comments, ki] = parsestr(data, k); k = k + ki;
     K.numSteps = typecast(data(k:k+4-1),'uint32'); k = k + 4;
-    K.testStartTime = char(string(datetime(typecast(data(k:k+8-1), 'uint64'), 'ConvertFrom', '.net', 'TimeZone', 'Europe/London'),'dd/MM/yyyy hh:mm:ss','en_GB')); k = k + 8;
+    K.testStartTime = char(string(datetime(typecast(data(k:k+8-1), 'uint64'), 'ConvertFrom', '.net', 'TimeZone', 'Europe/London'),'dd/MM/yyyy HH:mm:ss','en_GB')); k = k + 8;
     [K.status, ki] = parsestr(data, k); k = k + ki;
-    K.testEndTime = char(string(datetime(typecast(data(k:k+8-1), 'uint64'), 'ConvertFrom', '.net', 'TimeZone', 'Europe/London'),'dd/MM/yyyy hh:mm:ss','en_GB')); k = k + 8;
+    K.testEndTime = char(string(datetime(typecast(data(k:k+8-1), 'uint64'), 'ConvertFrom', '.net', 'TimeZone', 'Europe/London'),'dd/MM/yyyy HH:mm:ss','en_GB')); k = k + 8;
     K.numStepsCompleted = typecast(data(k:k+4-1),'uint32'); k = k + 4;
 else
     error("File shorter than expected header");
@@ -102,7 +104,7 @@ while (k<c)
             error("Step header "+num2str(typecast(data(k-8:k-1),'uint32'))+" at byte "+num2str(k-8)+" unrecognised")
     end
     [K.Steps{i}.stepName, ki] = parsestr(data, k); k = k + ki;
-    K.Steps{i}.stepStartTime = char(string(datetime(typecast(data(k:k+8-1), 'uint64'), 'ConvertFrom', '.net', 'TimeZone', 'Europe/London'),'dd/MM/yyyy hh:mm:ss','en_GB')); k = k + 8;
+    K.Steps{i}.stepStartTime = char(string(datetime(typecast(data(k:k+8-1), 'uint64'), 'ConvertFrom', '.net', 'TimeZone', 'Europe/London'),'dd/MM/yyyy HH:mm:ss','en_GB')); k = k + 8;
     if(strcmp(K.Steps{i}.stepType, 'Timed'))
         K.Steps{i}.stepDurationSeconds = round(double(typecast(data(k:k+8-1), 'uint64'))/1e7,3);
     end
@@ -143,7 +145,7 @@ while (k<c)
         k = k + 4;
         K.Steps{i}.numDatapoints = typecast(data(k:k+4-1),'uint32'); k = k + 4;
         for j = 1:K.Steps{i}.numDatapoints
-            % K.Steps{i}.dataTimestamp(j) = string(datetime(typecast(data(k:k+8-1), 'uint64'), 'ConvertFrom', '.net', 'TimeZone', 'Europe/London'),'dd/MM/yyyy hh:mm:ss','en_GB');
+            % K.Steps{i}.dataTimestamp(j) = string(datetime(typecast(data(k:k+8-1), 'uint64'), 'ConvertFrom', '.net', 'TimeZone', 'Europe/London'),'dd/MM/yyyy HH:mm:ss','en_GB');
             k = k + 8;
             K.Steps{i}.secondsElapsed(j) = round(typecast(data(k:k+8-1),'double'),3); k = k + 8;
             K.Steps{i}.lubeTemperature(j) = round(typecast(data(k:k+8-1),'double'),2); k = k + 8;
@@ -152,6 +154,7 @@ while (k<c)
             K.Steps{i}.wear(j) = round(typecast(data(k:k+8-1),'double'),1); k = k + 8;
             if (mtm_etm ~= 'e') % ETM has no ECR
                 % I think this is ECR but not totally sure
+                % ignoring these for now
                 % K.Steps{i}.ECR(j) = typecast(data(k:k+8-1),'double');
                 k = k + 8;
             end
@@ -178,26 +181,28 @@ while (k<c)
     end
 end
 
-str = jsonencode(K); %, 'PrettyPrint', true);
-% PrettyPrint option not working until R2021a so this is the poor man's JSON beautifier (no indentation)
-str = strrep(str, ',"', sprintf(',\n"'));
-str = strrep(str, '":', '": ');
-str = strrep(str, '{', sprintf('\n{\n'));
-str = strrep(str, '}', sprintf('\n}\n'));
-str = strrep(str, sprintf('}\n,'), '},');
+if (nargin==0 || nargin==2)
+    str = jsonencode(K); %, 'PrettyPrint', true);
+    % PrettyPrint option not working until R2021a so this is the poor man's JSON beautifier (no indentation)
+    str = strrep(str, ',"', sprintf(',\n"'));
+    str = strrep(str, '":', '": ');
+    str = strrep(str, '{', sprintf('\n{\n'));
+    str = strrep(str, '}', sprintf('\n}\n'));
+    str = strrep(str, sprintf('}\n,'), '},');
 
-if (nargin==2)
-    flnm = varargin{2};
-    f = fopen(flnm,'w');
-else
-    [flnm,pth,~] = uiputfile({'*.json','JavaScript Object Notation Files (*.json)';'*.*','All Files (*.*)'},'Save File',flnm(1:length(flnm)-5));
-    f = fopen([pth,flnm],'w');
+    if (nargin==2)
+        flnm = varargin{2};
+        f = fopen(flnm,'w');
+    elseif (nargin==0)
+        [flnm,pth,~] = uiputfile({'*.json','JavaScript Object Notation Files (*.json)';'*.*','All Files (*.*)'},'Save File',flnm(1:length(flnm)-5));
+        f = fopen([pth,flnm],'w');
+    end
+
+    % write JSON string to file
+    fwrite(f, str(2:end));
+    fclose(f);
+
 end
-
-% write JSON string to file
-fwrite(f, str(2:end));
-fclose(f);
-
 end
 
 function [str, ki] = parsestr(data, k)
