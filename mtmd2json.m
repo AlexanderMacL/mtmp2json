@@ -208,17 +208,18 @@ end
 function [str, ki] = parsestr(data, k)
     ki = 1;
     str = '';
-    if (data(k)==0)
+    c = uint64(data(k));
+    if (c==0)
         return;
-    elseif (bitand(data(k),128)~=0)
-        if (data(k+1)==1)
-            data(k+1) = data(k);
-            k = k + 1; % if more than 127 chars in descriptor, account for extra byte
+    else
+        ci = 1;
+        while (bitand(uint64(data(k)),128)~=0)
+            c = c + bitshift(1,7*ci)*(uint64(data(k+1))-1); % if more than 127 chars in descriptor, account for extra byte
             ki = ki + 1;
-        else
-            warning("Unexpected string header bytes 0x%x 0x%x at byte %d",data(k),data(k+1),k);
+            k = k + 1;
+            ci = ci + 1;
         end
     end
-    str = char(data(k+1:k+uint64(data(k))));
-    ki = uint64(data(k)) + ki;
+    str = char(data(k+1:k+c));
+    ki = c + ki;
 end
